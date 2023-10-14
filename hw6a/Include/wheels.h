@@ -1,2 +1,0 @@
-#define TRAVEL_DISTANCE (5)
-#define WAITING2START (50)
