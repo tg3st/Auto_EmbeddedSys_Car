@@ -35,11 +35,9 @@ char forward; //
 
 // Added Global Vars.
 unsigned char event = NONE;
-unsigned char time_change = NONE; // identifier that change occured
+unsigned char time_change = NONE; // identifier that change occuredDis
 
 
-
-//void main(void){
 void main(void){
 //    WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
 
@@ -52,7 +50,6 @@ void main(void){
   PM5CTL0 &= ~LOCKLPM5;
 // Disable the GPIO power-on default high-impedance mode to activate
 // previously configured port settings
-
   Init_Ports();                        // Initialize Ports
   Init_Clocks();                       // Initialize Clock System
   Init_Conditions();                   // Initialize Variables and Initial Conditions
@@ -69,15 +66,12 @@ void main(void){
   strcpy(display_line[0], "          ");
   strcpy(display_line[1], "          ");
   strcpy(display_line[2], "          ");
+  strcpy(display_line[3], "          ");
   if (P2OUT & IR_LED) {
-      strcpy(display_line[3], "  IR ON   ");
+      strcpy(display_line[3], "     IR ON");
   }
   display_changed = TRUE;
 //  Display_Update(0,0,0,0);
-
-  wheel_move = 0;
-  forward = TRUE; // movement forward and reverse (for. = TRUE, rev. = FALSE)
-
 
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
@@ -90,6 +84,7 @@ void main(void){
     if ((P6OUT & R_REVERSE) && (P6OUT & R_FORWARD)) {
            wheels_stop();
     }
+
     switch (event) {
         case BLACK_DETECT:
             run_till_black();

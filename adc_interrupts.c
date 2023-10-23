@@ -11,7 +11,10 @@
 #include  "Include\LCD.h"
 #include  "Include\macros.h"
 #include  "Include\ports.h"
+#include  "Include\adc.h"
 
+//Global Vars.
+extern char display_line[4][11];
 
 //Local Vars.
 unsigned char ADC_Channel;
@@ -21,6 +24,8 @@ unsigned volatile int ADC_Thumb;
 unsigned volatile int ADC_Left_Detect_Global = RESET_STATE;
 unsigned volatile int ADC_Right_Detect_Global = RESET_STATE;
 unsigned volatile int ADC_Thumb_Global = RESET_STATE;
+unsigned volatile int on_time;
+unsigned volatile int display_time;
 
 #pragma vector=ADC_VECTOR
 __interrupt void ADC_ISR(void){
@@ -58,7 +63,7 @@ void adc_thumb(void){
 
             ADCMCTL0 &= ~ADCINCH_2; // Disable Last channel A2
             ADCMCTL0 |= ADCINCH_3; // Enable Next channel A3
-            ADCCTL0 |= ADCSC; // Start next sample // Change placement of statement - FLAG
+            ADCCTL0 |= ADCSC; // Start next sample
             break;
         case 0x01: // Channel A3 Interrupt
             ADC_Right_Detect = ADCMEM0; // Move result into Global Values
@@ -69,17 +74,25 @@ void adc_thumb(void){
 
             ADCMCTL0 &= ~ADCINCH_3; // Disable Last channel A2
             ADCMCTL0 |= ADCINCH_5; // Enable Next channel A5
-            ADCCTL0 |= ADCSC; // Start next sample // Change placement of statement - FLAG
+            ADCCTL0 |= ADCSC; // Start next sample
             break;
 
         // add break count for thumb wheel reeding
         // add count for number of reading - FLAG
-        case 0x02: // Channel A5 Interrupts // thumb_wheel is first one???
+        case 0x02: // Channel A5 Interrupts
             ADC_Thumb = ADCMEM0; // Move result into Global Values
 
             ADC_Thumb_Global = ADC_Thumb >> 2; // Divide result by 4
             HEXtoBCD(ADC_Thumb); // Convert to str
             adc_line(2,0); // Place String in Display
+            on_time++;
+            if (on_time >= ADC_INSTANCE_COUNT) {
+                on_time = 0;
+                display_time++;
+                strcpy(display_line[3], "    sec   ");
+                HEXtoBCD(display_time); // Convert to str
+                adc_line(3,0); // Place String in Display
+            }
 
             ADCMCTL0 &= ~ADCINCH_5; // Disable Last channel A5
             ADCMCTL0 |= ADCINCH_2; // Enable First channel A2
