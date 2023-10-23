@@ -19,8 +19,11 @@
 
 
 void turn_clockwise(){ // turns clockwise
-    Lwheel_forward();
-    Rwheel_reverse();
+    wheels_stop();
+    LEFT_FORWARD_SPEED = PERCENT_5;
+    RIGHT_REVERSE_SPEED = PERCENT_5;
+    //Lwheel_forward();
+    //Rwheel_reverse();
 }
 
 void turn_counter(){ // turns clockwise
@@ -30,11 +33,11 @@ void turn_counter(){ // turns clockwise
 
 void Rwheel_forward(){ // turns right wheel forward off before right wheel reverse on
     RIGHT_REVERSE_SPEED = WHEEL_OFF;
-    RIGHT_FORWARD_SPEED = PERCENT_20;
+    RIGHT_FORWARD_SPEED = PERCENT_10;
 }
 void Lwheel_forward(){ // turns left wheel forward off before left wheel reverse on
     LEFT_REVERSE_SPEED = WHEEL_OFF;
-    LEFT_FORWARD_SPEED = PERCENT_80; //
+    LEFT_FORWARD_SPEED = PERCENT_10; //
 }
 
 void wheels_forward(){ // function definition for straight forward wheel movement
@@ -44,11 +47,11 @@ void wheels_forward(){ // function definition for straight forward wheel movemen
 }
 void Rwheel_reverse(){ // turns right wheel forward off before right wheel reverse on
     RIGHT_FORWARD_SPEED = WHEEL_OFF;
-    RIGHT_REVERSE_SPEED = PERCENT_80; // RIGHT_REVERSE_SPEED = WHEEL_OFF;
+    RIGHT_REVERSE_SPEED = PERCENT_10; // RIGHT_REVERSE_SPEED = WHEEL_OFF;
 }
 void Lwheel_reverse(){ // turns left wheel forward off before left wheel reverse on
     LEFT_FORWARD_SPEED = WHEEL_OFF;
-    LEFT_REVERSE_SPEED = PERCENT_80;
+    LEFT_REVERSE_SPEED = PERCENT_10;
 }
 void wheels_reverse(){ // sets both wheels to reverse
     wheels_stop();
